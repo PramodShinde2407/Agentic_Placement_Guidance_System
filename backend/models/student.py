@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, Numeric, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, DateTime, Numeric, ForeignKey,Boolean
 from .base import Base
 
 
@@ -41,3 +41,13 @@ class Student(Base):
     linkedin_url = Column(Text)
 
     created_at = Column(DateTime)
+    
+    marks_10th = Column(Numeric(5, 2), nullable=True)
+
+    marks_12th = Column(Numeric(5, 2), nullable=True)
+
+    active_backlog = Column(Boolean, default=False)
+
+    passive_backlog = Column(Boolean, default=False)
+
+    amcat_score = Column(Numeric(6, 2), nullable=True)

@@ -11,6 +11,12 @@ from backend.routes.student_skill import router as student_skill_router
 from backend.routes.company import router as company_router
 from backend.routes.placement import router as placement_router
 from backend.routes.auth import router as auth_router
+from backend.routes.guidance import router as guidance_router
+from backend.routes.role_skill import router as role_skill_router
+from backend.routes.company_visit import router as company_visit_router
+from backend.routes.eligibility_rule import router as eligibility_rule_router
+from backend.routes.eligibility_check import router as eligibility_check_router
+
 app = FastAPI()
 
 
@@ -44,3 +50,8 @@ app.include_router(student_skill_router)
 app.include_router(company_router)
 app.include_router(placement_router)
 app.include_router(auth_router)
+app.include_router(guidance_router)
+app.include_router(role_skill_router)
+app.include_router(company_visit_router)
+app.include_router(eligibility_rule_router)
+app.include_router(eligibility_check_router)
