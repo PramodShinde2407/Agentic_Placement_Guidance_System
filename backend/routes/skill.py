@@ -1,7 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from backend.database.dependencies import get_db
+from backend.database.dependencies import (
+    get_db,
+    require_admin
+)
+from backend.models.user import User
 from backend.schemas.skill import (
     SkillCreate,
     SkillUpdate,
@@ -23,7 +27,8 @@ router = APIRouter(
 )
 def create_skill(
     skill_data: SkillCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     return skill_service.create_skill(
         db,

@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from backend.database.dependencies import get_db
-
+from backend.database.dependencies import (
+    get_db,
+    require_admin
+)
 from backend.schemas.company import (
     CompanyCreate,
     CompanyUpdate,
     CompanyResponse
 )
-
+from backend.models.user import User
 from backend.service import company as company_service
 
 
@@ -25,7 +27,8 @@ router = APIRouter(
 )
 def create_company(
     company_data: CompanyCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     return company_service.create_company(
         db,
@@ -72,7 +75,8 @@ def get_company(
 def update_company(
     company_id: int,
     company_data: CompanyUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     company = company_service.update_company(
         db,
@@ -92,7 +96,8 @@ def update_company(
 @router.delete("/{company_id}")
 def delete_company(
     company_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     company = company_service.delete_company(
         db,

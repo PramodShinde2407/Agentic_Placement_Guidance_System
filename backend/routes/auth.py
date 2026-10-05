@@ -3,7 +3,9 @@ from sqlalchemy.orm import Session
 
 from backend.database.dependencies import (
     get_db,
-    get_current_user
+    get_current_user,
+    require_admin,
+    require_student
 )
 from backend.schemas.auth import (
     RegisterRequest,
@@ -11,7 +13,7 @@ from backend.schemas.auth import (
     TokenResponse,
     UserResponse
 )
-
+from backend.models.user import User
 from backend.service.auth import (
     register_user,
     login_user
@@ -78,3 +80,24 @@ def get_me(
 ):
 
     return current_user
+
+@router.get("/admin-test")
+def admin_test(
+    current_user: User = Depends(require_admin)
+):
+    return {
+        "message": "You have admin access",
+        "user_id": current_user.id,
+        "role": current_user.role
+    }
+
+
+@router.get("/student-test")
+def student_test(
+    current_user: User = Depends(require_student)
+):
+    return {
+        "message": "You have student access",
+        "user_id": current_user.id,
+        "role": current_user.role
+    }

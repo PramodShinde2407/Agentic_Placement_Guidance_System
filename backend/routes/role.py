@@ -1,14 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from backend.database.dependencies import get_db
+from backend.database.dependencies import (
+    get_db,
+    require_admin
+)
+
 from backend.schemas.role import (
     RoleCreate,
     RoleUpdate,
     RoleResponse
 )
 from backend.service import role as role_service
-
+from backend.models.user import User
 
 router = APIRouter(
     prefix="/roles",
@@ -23,7 +27,8 @@ router = APIRouter(
 )
 def create_role(
     role_data: RoleCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     return role_service.create_role(
         db,
@@ -70,7 +75,8 @@ def get_role(
 def update_role(
     role_id: int,
     role_data: RoleUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     role = role_service.update_role(
         db,
@@ -90,7 +96,8 @@ def update_role(
 @router.delete("/{role_id}")
 def delete_role(
     role_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     role = role_service.delete_role(
         db,

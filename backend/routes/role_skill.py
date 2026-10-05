@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from backend.database.dependencies import get_db
+from backend.database.dependencies import get_db , require_admin
+from backend.models.user import User
 from backend.schemas.role_skill import (
     RoleSkillCreate,
     RoleSkillUpdate,
@@ -23,7 +24,8 @@ router = APIRouter(
 def add_role_skill(
     role_id: int,
     skill_data: RoleSkillCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     try:
         result = role_skill_service.add_role_skill(
@@ -80,7 +82,8 @@ def update_role_skill(
     role_id: int,
     skill_id: int,
     skill_data: RoleSkillUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     role_skill = role_skill_service.update_role_skill(
         db,
@@ -105,7 +108,8 @@ def update_role_skill(
 def delete_role_skill(
     role_id: int,
     skill_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     role_skill = role_skill_service.delete_role_skill(
         db,

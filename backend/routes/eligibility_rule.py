@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from backend.database.dependencies import get_db
-
+from backend.database.dependencies import get_db, require_admin
+from backend.models.user import User
 from backend.schemas.eligibility_rule import (
     EligibilityRuleCreate,
     EligibilityRuleUpdate,
@@ -22,7 +22,8 @@ router = APIRouter(
 @router.post("/", response_model=EligibilityRuleResponse)
 def create_eligibility_rule(
     rule_data: EligibilityRuleCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     result = eligibility_rule_service.create_eligibility_rule(
         db,
@@ -100,7 +101,8 @@ def get_eligibility_rule(
 def update_eligibility_rule(
     rule_id: int,
     rule_data: EligibilityRuleUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     rule = eligibility_rule_service.update_eligibility_rule(
         db,
@@ -124,7 +126,8 @@ def update_eligibility_rule(
 )
 def delete_eligibility_rule(
     rule_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     rule = eligibility_rule_service.delete_eligibility_rule(
         db,

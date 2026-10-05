@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from backend.database.dependencies import get_db
+from backend.database.dependencies import get_db, require_admin
 from backend.schemas.company_visit import (
     CompanyVisitCreate,
     CompanyVisitUpdate,
     CompanyVisitResponse
 )
 from backend.service import company_visit as company_visit_service
-
+from backend.models.user import User
 
 router = APIRouter(
     prefix="/company-visits",
@@ -22,7 +22,8 @@ router = APIRouter(
 )
 def create_company_visit(
     visit_data: CompanyVisitCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     return company_visit_service.create_company_visit(
         db,
@@ -83,7 +84,8 @@ def get_company_visit(
 def update_company_visit(
     visit_id: int,
     visit_data: CompanyVisitUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     company_visit = company_visit_service.update_company_visit(
         db,
@@ -106,7 +108,8 @@ def update_company_visit(
 )
 def delete_company_visit(
     visit_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin)
 ):
     company_visit = company_visit_service.delete_company_visit(
         db,

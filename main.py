@@ -16,6 +16,16 @@ from backend.routes.role_skill import router as role_skill_router
 from backend.routes.company_visit import router as company_visit_router
 from backend.routes.eligibility_rule import router as eligibility_rule_router
 from backend.routes.eligibility_check import router as eligibility_check_router
+from backend.routes.application import router as application_router
+from backend.routes.interview_round import router as interview_round_router
+from backend.routes.oa_question import router as oa_question_router
+from backend.routes.interview_experience import router as interview_experience_router
+from backend.routes.project import router as project_router
+from backend.routes.resume import router as resume_router
+from backend.routes.chat_history import router as chat_history_router
+from backend.routes.analytics import router as analytics_router
+from backend.routes.analytics import router as analytics_router
+from backend.routes.recommendation import router as recommendation_router
 
 app = FastAPI()
 
@@ -55,3 +65,13 @@ app.include_router(role_skill_router)
 app.include_router(company_visit_router)
 app.include_router(eligibility_rule_router)
 app.include_router(eligibility_check_router)
+app.include_router(application_router)
+app.include_router(interview_round_router)
+app.include_router(oa_question_router)
+app.include_router(interview_experience_router)
+app.include_router(project_router)
+app.include_router(resume_router)
+app.include_router(chat_history_router)
+app.include_router(analytics_router)
+app.include_router(analytics_router)
+app.include_router(recommendation_router)
